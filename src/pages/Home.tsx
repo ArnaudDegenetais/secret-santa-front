@@ -3,13 +3,18 @@ import axios from "axios";
 
 const Home: React.FC = () => {
   const [groupMembers, setGroupMembers] = useState<string[]>([]);
+  // using env variable
+  console.log(import.meta.env.VITE_SANTA_BACK_URL);
+
+  const apiUrl = import.meta.env.VITE_SANTA_BACK_URL;
 
   useEffect(() => {
     const fetchGroupMembers = async () => {
       const token = localStorage.getItem("token");
       if (token) {
         try {
-          const response = await axios.get("http://localhost:3000/api/users/group/1", {
+          // const response = await axios.get(apiUrl + "api/users/group/1", {
+          const response = await axios.get(apiUrl + "api/users/", {
             headers: { Authorization: `Bearer ${token}` },
           });
           setGroupMembers(response.data);
