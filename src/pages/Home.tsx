@@ -13,7 +13,7 @@ const Home: React.FC = () => {
       console.log("fetchGroupMembers");
       const token = localStorage.getItem("token");
       console.log("token : ", token);
-      if (token) {
+      // if (token) {
         try {
           // const response = await axios.get(apiUrl + "api/users/group/1", {
           const response = await axios.get(apiUrl + "api/users/", {
@@ -24,7 +24,7 @@ const Home: React.FC = () => {
         } catch (err) {
           console.error("Erreur lors de la récupération des membres du groupe.", err);
         }
-      }
+      // }
     };
 
     fetchGroupMembers();
