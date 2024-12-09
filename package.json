@@ -2,7 +2,7 @@
   "name": "secret-santa-frontend",
   "private": true,
   "version": "0.0.1",
-  "homepage": "https://arnauddegenetais.github.io/secret-santa-front.github.io/",
+  "homepage": "https://arnauddegenetais.github.io/",
   "type": "module",
   "scripts": {
     "dev": "vite",
