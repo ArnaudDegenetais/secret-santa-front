@@ -30,7 +30,7 @@ const Home: React.FC = () => {
   return (
     <div>
       <h2>Bienvenue dans votre groupe Secret Santa !</h2>
-      <h3>Membres du groupe</h3>
+      <h3>Membres du groupe 1 </h3>
       <ul>
         {groupMembers.map((email) => (
           <li key={email}>{email}</li>
