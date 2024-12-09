@@ -10,13 +10,16 @@ const Home: React.FC = () => {
 
   useEffect(() => {
     const fetchGroupMembers = async () => {
+      console.log("fetchGroupMembers");
       const token = localStorage.getItem("token");
+      console.log("token : ", token);
       if (token) {
         try {
           // const response = await axios.get(apiUrl + "api/users/group/1", {
           const response = await axios.get(apiUrl + "api/users/", {
-            headers: { Authorization: `Bearer ${token}` },
+            // headers: { Authorization: `Bearer ${token}` },
           });
+          console.log("after request : ", response);
           setGroupMembers(response.data);
         } catch (err) {
           console.error("Erreur lors de la récupération des membres du groupe.", err);
@@ -30,7 +33,7 @@ const Home: React.FC = () => {
   return (
     <div>
       <h2>Bienvenue dans votre groupe Secret Santa !</h2>
-      <h3>Membres du groupe 1 </h3>
+      <h3>Lutins du groupe 1 </h3>
       <ul>
         {groupMembers.map((email) => (
           <li key={email}>{email}</li>
