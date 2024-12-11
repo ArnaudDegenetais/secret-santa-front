@@ -12,6 +12,7 @@ const RegisterForm: React.FC = () => {
       const response = await axios.post("http://localhost:3000/api/users/register", {
         email,
         password,
+        groupIds: ["1"],
       });
       console.log("HANDLE SUBMIT : ",response.data);
       alert("Inscription réussie");

@@ -1,0 +1,17 @@
+.register-container {
+  padding: 20px;
+}
+
+.register-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+
+.register-form {
+  /* Additional styles for the form can be added here */
+}
+
+.users-list {
+  /* Additional styles for the list can be added here */
+}
