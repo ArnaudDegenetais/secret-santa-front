@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import axios from "axios";
 
 const RegisterForm: React.FC = () => {
+  const [firstName, setFirstName] = useState<string>("");
+  const [lastName, setLastName] = useState<string>("");
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [error, setError] = useState<string>("");
@@ -10,6 +12,8 @@ const RegisterForm: React.FC = () => {
     e.preventDefault();
     try {
       const response = await axios.post("http://localhost:3000/api/users/register", {
+        firstName,
+        lastName,
         email,
         password,
         groupIds: ["1"],
@@ -23,6 +27,20 @@ const RegisterForm: React.FC = () => {
 
   return (
     <form onSubmit={handleSubmit}>
+      <input
+        type="string"
+        placeholder="First Name"
+        value={firstName}
+        onChange={(e) => setFirstName(e.target.value)}
+        required
+      />
+      <input
+        type="string"
+        placeholder="Last Name"
+        value={lastName}
+        onChange={(e) => setLastName(e.target.value)}
+        required
+      />
       <input
         type="email"
         placeholder="Email"

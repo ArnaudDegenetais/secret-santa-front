@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import axios from "axios";
 import RegisterForm from "../components/RegisterForm";
-import UsersList from "../components/UsersList";
+import UsersList from "../components/UsersTable/UsersList";
 import './Register.css';
 
 const Register: React.FC = () => {
