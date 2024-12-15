@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import TreeLoader from "../TreeLoader";
+import TreeLoader from "../TreeLoader/TreeLoader";
 import {
   Table,
   TableBody,
@@ -74,6 +74,18 @@ const UsersList: React.FC<UsersListProps> = ({ membersList, isLoading }) => {
     }
   };
 
+  const handleDelete = async (userId: number) => {
+    try {
+      const response = await axios.delete(apiUrl + "/api/users/user/" + userId);
+      console.log("Response: ", response);
+      setEditableMembers((prevMembers) =>
+        prevMembers.filter((member) => member.userId !== userId)
+      );
+    } catch (error) {
+      console.error("Error deleting member: ", error);
+    }
+  }
+
   return (
     <div>
       {isLoading && <TreeLoader />}
@@ -142,7 +154,7 @@ const UsersList: React.FC<UsersListProps> = ({ membersList, isLoading }) => {
                 </TableCell>
                 <TableCell>
                   <button onClick={() => handleUpdate(user.userId)}>Update</button>
-                  <button>Delete</button>
+                  <button onClick={() => handleDelete(user.userId)}>Delete</button>
                 </TableCell>
               </TableRow>
             ))}

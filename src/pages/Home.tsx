@@ -2,8 +2,12 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { jwtDecode, JwtPayload } from "jwt-decode";
-import TreeLoader from "../components/TreeLoader";
+import { useStore } from "@tanstack/react-store";
+import userStore from "../utils/UserStore";
+import TreeLoader from "../components/TreeLoader/TreeLoader";
+import Layout from '../components/Layout';
 import UsersList from "../components/UsersTable/UsersList";
+import UserHome from "./UserHome";
 
 type members = {
   userId: number;
@@ -17,26 +21,42 @@ type members = {
 
 type tokenPayload = JwtPayload & {
   role: string;
+  receiverId: string;
+  userId: string;
 };
 
 const Home: React.FC = () => {
+  const [isAdmin, setIsAdmin] = useState(false);
   const navigate = useNavigate();
+  const user = useStore(userStore, (state) => state);
 
-  const handleNavigate = () => {
+  useEffect(() => {
     const token = localStorage.getItem("santaToken");
-    console.log("token : ", token);
-    if (token) {
+    if (!token) {
+      navigate("/secret-santa-front/login");
+    } else {
       const decoded: tokenPayload = jwtDecode(token);
       console.log("decoded : ", decoded);
       if (decoded.role === "admin") {
-        navigate("/secret-santa-front/register");
-      } else {
-        alert("Unauthorized access. Admin only.");
+        setIsAdmin(true);
       }
-    } else {
-      alert("No token found.");
+      if (user.email === "") {
+        axios.get(`${apiUrl}/api/users/user/${decoded.userId}`)
+          .then((response) => {
+            console.log("response : ", response);
+            userStore.setState((state) => ({
+              ...state,
+              firstName: response.data.firstName,
+              lastName: response.data.lastName,
+              email: response.data.email,
+              wishes: response.data.wishes,
+              role: response.data.role,
+            }));
+          });
+      }
     }
-  };
+  }, [navigate, user.email]);
+
   const [isLoading, setIsLoading] = useState(true);
   const [groupMembers, setGroupMembers] = useState<members[]>([]);
   // using env variable
@@ -47,7 +67,6 @@ const Home: React.FC = () => {
   useEffect(() => {
     const fetchGroupMembers = async () => {
       console.log("fetchGroupMembers");
-      // const token = localStorage.getItem("santaToken");
       // console.log("token : ", token);
       // if (token) {
       try {
@@ -65,23 +84,27 @@ const Home: React.FC = () => {
     };
 
     fetchGroupMembers();
-  }, []);
+  }, [apiUrl]);
 
   const chooseReceiver = async () => {
     await axios.post(apiUrl + "/api/users/secret-santa/start");
   }
 
   return (
-    <div style={{ display: 'flex', justifyContent: 'center', flexDirection: 'column', padding: 20, margin: 20, width: '100%' }}>
+    <Layout>
       {isLoading && <TreeLoader />}
-      {!isLoading &&
+      {!isLoading && isAdmin && (
         <>
-        <UsersList membersList={groupMembers} isLoading={isLoading} />
-        <button onClick={handleNavigate}>Go to Register</button>
-        <button onClick={chooseReceiver}>Choose Receiver</button>
+          <UsersList membersList={groupMembers} isLoading={isLoading} />
+          <button onClick={chooseReceiver}>Choose Receiver</button>
         </>
-      }
-    </div>
+      )}
+      {!isLoading && !isAdmin && (
+        <>
+          <UserHome />
+        </>
+      )}
+    </Layout>
   );
 };
 
