@@ -60,7 +60,7 @@ const Home: React.FC = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [groupMembers, setGroupMembers] = useState<members[]>([]);
   // using env variable
-  console.log(import.meta.env.VITE_SANTA_BACK_URL);
+  console.log("import meta ENV : ", import.meta.env.VITE_SANTA_BACK_URL);
 
   const apiUrl = import.meta.env.VITE_SANTA_BACK_URL;
 
