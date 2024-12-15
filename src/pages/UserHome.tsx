@@ -15,6 +15,7 @@ type tokenPayload = JwtPayload & {
 const UserHome: React.FC = () => {
   const apiUrl = import.meta.env.VITE_SANTA_BACK_URL;
   const [wish, setWish] = useState("");
+  const [showReceiver, setShowReceiver] = useState(false);
   const token = localStorage.getItem("santaToken");
   const joditMessage = "Rédige ta lettre au Père Noël ici !";
 
@@ -39,6 +40,14 @@ const UserHome: React.FC = () => {
     updateWhish(wish);
   }, [wish]);
 
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setShowReceiver(true);
+    }, 5000);
+
+    return () => clearTimeout(timer);
+  }, []);
+
   const snowflakes = Array.from({ length: 50 }).map(() => ({
     size: Math.random() * 10 + 5,
     left: Math.random() * windowSize.width,
@@ -55,8 +64,8 @@ const UserHome: React.FC = () => {
       < div className="grid grid-cols-1 gap-4 p-4 md:grid-cols-2 " >
         <motion.div
           className="bg-red-200 p-4 rounded-lg shadow-md h-80 md:h-150"
-          initial={{ opacity: 0, y: -20 }}
-          animate={{ opacity: 1, y: 0 }}
+          initial={{ opacity: 0, y: -20, height: "300px" }}
+          animate={{ opacity: 1, y: 0, height: showReceiver ? "auto" : "300px" }}
           transition={{ duration: 0.5 }}
         >
           <MyReceiver />
