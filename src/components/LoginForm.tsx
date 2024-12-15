@@ -5,6 +5,7 @@ import { motion } from 'framer-motion';
 import userStore from '../utils/UserStore';
 
 const LoginForm: React.FC = () => {
+  const apiUrl = import.meta.env.VITE_SANTA_BACK_URL;
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
@@ -13,7 +14,7 @@ const LoginForm: React.FC = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      const response = await axios.post("http://localhost:3000/api/users/login", {
+      const response = await axios.post(`${apiUrl}/api/users/login`, {
         email,
         password,
       });
