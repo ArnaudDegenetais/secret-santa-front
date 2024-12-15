@@ -1,4 +1,4 @@
-import React, { useState, useRef, useMemo } from 'react';
+import React, { useState, useRef, useMemo, useEffect } from 'react';
 import JoditEditor from 'jodit-react';
 import { useStore } from "@tanstack/react-store";
 import userStore from '../../utils/UserStore';
@@ -13,21 +13,31 @@ const Jodit: React.FC<JoditProps> = ({ placeholder, setWish }) => {
   const editor = useRef(null);
   const user = useStore(userStore, (state) => state);
   const [content, setContent] = useState(user.wishes);
-  console.log("TANSTACK JODIT User: ", user);
+  const [joditHeight, setJoditHeight] = useState(300);
+
+  useEffect(() => {
+    // Check the device type and set the height accordingly
+    const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+    if (isMobile) {
+      setJoditHeight(300);
+      document.body.classList.add('is-mobile');
+    } else {
+      document.body.classList.remove('is-mobile');
+    }
+  }, []);
 
   const config = useMemo(() => ({
     readonly: false, // all options from https://xdsoft.net/jodit/docs/,
     placeholder: placeholder || 'Start typings...',
     style: {
       color: 'black',
-      height: 300,
+      height: joditHeight,
     },
   }),
     [placeholder]
   );
 
   const handleContentChange = (newContent: string) => {
-    console.log("newContent : ", newContent);
     setWish(newContent);
   }
 

@@ -10,9 +10,8 @@ const Register: React.FC = () => {
   const apiUrl = import.meta.env.VITE_SANTA_BACK_URL;
   useEffect(() => {
     const fetchGroupMembers = async () => {
-      console.log("fetchGroupMembers");
-      const token = localStorage.getItem("santaToken");
-      console.log("token : ", token);
+      // const token = localStorage.getItem("santaToken");
+      // console.log("token : ", token);
       // if (token) {
       try {
         setIsLoading(true);
@@ -20,7 +19,6 @@ const Register: React.FC = () => {
         const response = await axios.get(apiUrl + "/api/users/", {
           // headers: { Authorization: `Bearer ${token}` },
         });
-        console.log("after request : ", response);
         setGroupMembers(response.data);
         setIsLoading(false);
       } catch (err) {

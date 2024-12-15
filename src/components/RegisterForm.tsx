@@ -11,14 +11,13 @@ const RegisterForm: React.FC = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      const response = await axios.post("http://localhost:3000/api/users/register", {
+      await axios.post("http://localhost:3000/api/users/register", {
         firstName,
         lastName,
         email,
         password,
         groupIds: ["1"],
       });
-      console.log("HANDLE SUBMIT : ",response.data);
       alert("Inscription réussie");
     } catch {
       setError("Erreur lors de l'inscription. Essaye encore.");

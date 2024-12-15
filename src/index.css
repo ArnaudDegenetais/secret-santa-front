@@ -152,3 +152,7 @@ button:focus-visible {
     @apply bg-background text-foreground;
   }
 }
+
+.is-mobile .jodit-toolbar__box {
+  display: none;
+}

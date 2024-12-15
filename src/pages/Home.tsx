@@ -36,14 +36,12 @@ const Home: React.FC = () => {
       navigate("/secret-santa-front/login");
     } else {
       const decoded: tokenPayload = jwtDecode(token);
-      console.log("decoded : ", decoded);
       if (decoded.role === "admin") {
         setIsAdmin(true);
       }
       if (user.email === "") {
         axios.get(`${apiUrl}/api/users/user/${decoded.userId}`)
           .then((response) => {
-            console.log("response : ", response);
             userStore.setState((state) => ({
               ...state,
               firstName: response.data.firstName,
@@ -59,22 +57,17 @@ const Home: React.FC = () => {
 
   const [isLoading, setIsLoading] = useState(true);
   const [groupMembers, setGroupMembers] = useState<members[]>([]);
-  // using env variable
-  console.log("import meta ENV : ", import.meta.env.VITE_SANTA_BACK_URL);
-
   const apiUrl = import.meta.env.VITE_SANTA_BACK_URL;
 
   useEffect(() => {
     const fetchGroupMembers = async () => {
-      console.log("fetchGroupMembers");
       // console.log("token : ", token);
       // if (token) {
       try {
         setIsLoading(true);
         const response = await axios.get(apiUrl + "/api/users/", {
             // headers: { Authorization: `Bearer ${token}` },
-          });
-          console.log("after request : ", response);
+        });
         setGroupMembers(response.data);
         setIsLoading(false);
         } catch (err) {

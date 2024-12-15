@@ -27,7 +27,6 @@ interface UsersListProps {
 }
 
 const UsersList: React.FC<UsersListProps> = ({ membersList, isLoading }) => {
-  console.log("Members list: ", membersList);
   const apiUrl = import.meta.env.VITE_SANTA_BACK_URL;
   const [editableMembers, setEditableMembers] = useState(membersList);
 
@@ -61,10 +60,8 @@ const UsersList: React.FC<UsersListProps> = ({ membersList, isLoading }) => {
   const handleUpdate = async (userId: number) => {
     const updatedMember = editableMembers.find((member) => member.userId === userId);
     if (updatedMember) {
-      console.log("Updated member: ", updatedMember);
       try {
-        const response = await axios.put(apiUrl + "/api/users/user/" + userId, updatedMember);
-        console.log("Response: ", response);
+        await axios.put(apiUrl + "/api/users/user/" + userId, updatedMember);
         updateMember(userId, updatedMember);
       } catch (error) {
         console.error("Error updating member: ", error);
@@ -76,8 +73,7 @@ const UsersList: React.FC<UsersListProps> = ({ membersList, isLoading }) => {
 
   const handleDelete = async (userId: number) => {
     try {
-      const response = await axios.delete(apiUrl + "/api/users/user/" + userId);
-      console.log("Response: ", response);
+      await axios.delete(apiUrl + "/api/users/user/" + userId);
       setEditableMembers((prevMembers) =>
         prevMembers.filter((member) => member.userId !== userId)
       );
