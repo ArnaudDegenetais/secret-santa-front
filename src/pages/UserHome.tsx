@@ -14,10 +14,10 @@ type tokenPayload = JwtPayload & {
 
 const UserHome: React.FC = () => {
   const apiUrl = import.meta.env.VITE_SANTA_BACK_URL;
-  const [wish, setWish] = useState("");
   const [showReceiver, setShowReceiver] = useState(false);
   const [isSending, setIsSending] = useState(false);
   const token = localStorage.getItem("santaToken");
+  const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
   const joditMessage = "Rédige ta lettre au Père Noël ici !";
 
   if (!token) {
@@ -38,10 +38,6 @@ const UserHome: React.FC = () => {
     width: window.innerWidth,
     height: window.innerHeight,
   });
-
-  useEffect(() => {
-    updateWhish(wish);
-  }, [wish]);
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -68,7 +64,7 @@ const UserHome: React.FC = () => {
         <motion.div
           className="bg-blue-100 p-4 rounded-lg shadow-md h-80 md:h-150"
           initial={{ opacity: 0, y: -20, height: "300px" }}
-          animate={{ opacity: 1, y: 0, height: showReceiver ? "auto" : "300px" }}
+          animate={{ opacity: 1, y: 0, height: (showReceiver && isMobile) ? "auto" : "300px" }}
           transition={{ duration: 0.5 }}
         >
           <MyReceiver />
@@ -79,7 +75,7 @@ const UserHome: React.FC = () => {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 0.2 }}
         >
-          <Jodit setWish={setWish} placeholder={joditMessage} isSending={isSending} />
+          <Jodit setWish={updateWhish} placeholder={joditMessage} isSending={isSending} />
         </motion.div>
       </div >
     </div>

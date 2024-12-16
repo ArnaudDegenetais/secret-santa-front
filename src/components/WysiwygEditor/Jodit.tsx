@@ -15,6 +15,7 @@ const Jodit: React.FC<JoditProps> = ({ placeholder, setWish, isSending }) => {
   const user = useStore(userStore, (state) => state);
   const [content, setContent] = useState(user.wishes);
   const [joditHeight, setJoditHeight] = useState(300);
+  const [buttonMessage, setButtonMessage] = useState('Envoie ta liste au Père Noël');
 
   useEffect(() => {
     // Check the device type and set the height accordingly
@@ -25,7 +26,11 @@ const Jodit: React.FC<JoditProps> = ({ placeholder, setWish, isSending }) => {
     } else {
       document.body.classList.remove('is-mobile');
     }
+    if (user.wishes.length > 0) {
+      setButtonMessage('Mettre à jour ta liste');
+    }
   }, []);
+
 
   const config = useMemo(() => ({
     readonly: false, // all options from https://xdsoft.net/jodit/docs/,
@@ -53,10 +58,10 @@ const Jodit: React.FC<JoditProps> = ({ placeholder, setWish, isSending }) => {
       />
       <motion.div
         className='mt-4'
-        initial={{ scale: 1, opacity: 0, y: 20, x: 0 }}
+        initial={{ scale: 1, opacity: 0, y: 20 }}
         animate={{ scale: 1, opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
-        whileHover={{ scale: 1.1, y: 0, x: 50 }}
+        whileHover={{ scale: 1.1, y: 0 }}
       >
         {isSending && (
           <div className="flex items-center justify-center">
@@ -65,7 +70,7 @@ const Jodit: React.FC<JoditProps> = ({ placeholder, setWish, isSending }) => {
         )}
         {!isSending &&
           <div className="flex items-center justify-center">
-            <button disabled={isSending} onClick={() => handleContentChange(content)}>Envoie ta liste au Père Noël</button>
+            <button disabled={isSending} onClick={() => handleContentChange(content)}>{buttonMessage}</button>
           </div>
         }
       </motion.div>
