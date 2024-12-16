@@ -27,6 +27,8 @@ type tokenPayload = JwtPayload & {
 
 const Home: React.FC = () => {
   const [isAdmin, setIsAdmin] = useState(false);
+  const [isSantaChoosing, setIsSantaChoosing] = useState(false);
+  const [isSendingMail, setIsSendingMail] = useState(false);
   const navigate = useNavigate();
   const user = useStore(userStore, (state) => state);
 
@@ -80,7 +82,15 @@ const Home: React.FC = () => {
   }, [apiUrl]);
 
   const chooseReceiver = async () => {
+    setIsSantaChoosing(true);
     await axios.post(apiUrl + "/api/users/secret-santa/start");
+    setIsSantaChoosing(false);
+  }
+
+  const sendEmails = async () => {
+    setIsSendingMail(true);
+    await axios.post(apiUrl + "/api/users/secret-santa/send-emails");
+    setIsSendingMail(false);
   }
 
   return (
@@ -89,7 +99,18 @@ const Home: React.FC = () => {
       {!isLoading && isAdmin && (
         <>
           <UsersList membersList={groupMembers} isLoading={isLoading} />
-          <button onClick={chooseReceiver}>Choose Receiver</button>
+          {isSantaChoosing && (
+            <div className="flex items-center justify-center">
+              <div className="spinner"></div>
+            </div>
+          )}
+          {!isSantaChoosing && <button onClick={chooseReceiver}>Choose Receiver</button>}
+          {isSendingMail && (
+            <div className="flex items-center justify-center">
+              <div className="spinner"></div>
+            </div>
+          )}
+          {!isSendingMail && <button onClick={sendEmails}>Send Emails</button>}
         </>
       )}
       {!isLoading && !isAdmin && (
