@@ -16,6 +16,7 @@ const UserHome: React.FC = () => {
   const apiUrl = import.meta.env.VITE_SANTA_BACK_URL;
   const [wish, setWish] = useState("");
   const [showReceiver, setShowReceiver] = useState(false);
+  const [isSending, setIsSending] = useState(false);
   const token = localStorage.getItem("santaToken");
   const joditMessage = "Rédige ta lettre au Père Noël ici !";
 
@@ -27,7 +28,9 @@ const UserHome: React.FC = () => {
   const decoded = jwtDecode<tokenPayload>(token);
   const userId = decoded.userId;
   const updateWhish = useCallback(async (newWhish: string) => {
+    setIsSending(true);
     await axios.put(`${apiUrl}/api/users/user/${userId}`, { wishes: newWhish });
+    setIsSending(false);
   }, [apiUrl, userId]);
 
   // calculate window size
@@ -63,7 +66,7 @@ const UserHome: React.FC = () => {
       }
       < div className="grid grid-cols-1 gap-4 p-4 md:grid-cols-2 " >
         <motion.div
-          className="bg-red-200 p-4 rounded-lg shadow-md h-80 md:h-150"
+          className="bg-blue-100 p-4 rounded-lg shadow-md h-80 md:h-150"
           initial={{ opacity: 0, y: -20, height: "300px" }}
           animate={{ opacity: 1, y: 0, height: showReceiver ? "auto" : "300px" }}
           transition={{ duration: 0.5 }}
@@ -71,12 +74,12 @@ const UserHome: React.FC = () => {
           <MyReceiver />
         </motion.div>
         <motion.div
-          className="bg-green-200 p-4 rounded-lg shadow-md h-max"
+          className="bg-blue-100 p-4 rounded-lg shadow-md h-max"
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 0.2 }}
         >
-          <Jodit setWish={setWish} placeholder={joditMessage} />
+          <Jodit setWish={setWish} placeholder={joditMessage} isSending={isSending} />
         </motion.div>
       </div >
     </div>

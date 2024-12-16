@@ -11,6 +11,8 @@ interface AuthProviderProps {
 }
 
 const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
+  const apiUrl = import.meta.env.VITE_SANTA_BACK_URL;
+  console.log("apiUrl : ", apiUrl);
   const navigate = useNavigate();
   const location = useLocation();
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -51,7 +53,9 @@ const App: React.FC = () => {
         {(isAuthenticated) => (
           <Routes>
             <Route path="/secret-santa-front/login" element={<Login />} />
-            <Route path="/secret-santa-front/register" element={
+            <Route
+              path="/secret-santa-front/register"
+              element={
               <PrivateRoute isAuthenticated={isAuthenticated}>
                 <Register />
               </PrivateRoute>

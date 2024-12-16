@@ -3,22 +3,25 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import userStore from '../utils/UserStore';
+import TreeLoader from './TreeLoader/TreeLoader';
 
 const LoginForm: React.FC = () => {
   const apiUrl = import.meta.env.VITE_SANTA_BACK_URL;
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
   const navigate = useNavigate();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
+      setIsLoading(true);
       const response = await axios.post(`${apiUrl}/api/users/login`, {
         email,
         password,
       });
-      localStorage.setItem("santaToken", response.data.token); // Store the JWT
+      localStorage.setItem("santaToken", response.data.token);
       userStore.setState((state) => ({
         ...state,
         firstName: response.data.user.firstName,
@@ -26,7 +29,8 @@ const LoginForm: React.FC = () => {
         email: response.data.user.email,
         wishes: response.data.user.wishes,
         role: response.data.user.role,
-      })); // Store the user
+      }));
+      setIsLoading(false);
       setError(''); // Reset the error
       navigate("/secret-santa-front/");
     } catch {
@@ -41,6 +45,10 @@ const LoginForm: React.FC = () => {
       animate={{ opacity: 1 }}
       transition={{ duration: 0.5 }}
     >
+      {isLoading && (
+        <TreeLoader />
+      )}
+      {!isLoading && (
       <motion.form
         className="bg-white p-8 rounded-lg shadow-md w-full max-w-md"
         onSubmit={handleSubmit}
@@ -86,7 +94,8 @@ const LoginForm: React.FC = () => {
             Se connecter
           </button>
         </div>
-      </motion.form>
+        </motion.form>
+      )}
     </motion.div>
   );
 };

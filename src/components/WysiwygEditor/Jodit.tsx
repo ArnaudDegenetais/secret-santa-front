@@ -7,9 +7,10 @@ import { motion } from "framer-motion";
 interface JoditProps {
   placeholder?: string;
   setWish: (wish: string) => void;
+  isSending: boolean;
 }
 
-const Jodit: React.FC<JoditProps> = ({ placeholder, setWish }) => {
+const Jodit: React.FC<JoditProps> = ({ placeholder, setWish, isSending }) => {
   const editor = useRef(null);
   const user = useStore(userStore, (state) => state);
   const [content, setContent] = useState(user.wishes);
@@ -57,7 +58,16 @@ const Jodit: React.FC<JoditProps> = ({ placeholder, setWish }) => {
         transition={{ duration: 0.5 }}
         whileHover={{ scale: 1.1, y: 0, x: 50 }}
       >
-        <button onClick={() => handleContentChange(content)}>Envoie ta liste au Père Noël</button>
+        {isSending && (
+          <div className="flex items-center justify-center">
+            <div className="spinner"></div>
+          </div>
+        )}
+        {!isSending &&
+          <div className="flex items-center justify-center">
+            <button disabled={isSending} onClick={() => handleContentChange(content)}>Envoie ta liste au Père Noël</button>
+          </div>
+        }
       </motion.div>
     </>
   );
