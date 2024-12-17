@@ -9,8 +9,9 @@ const LoginForm: React.FC = () => {
   const apiUrl = import.meta.env.VITE_SANTA_BACK_URL;
   const urlParams = new URLSearchParams(window.location.search);
   const linkEmail = urlParams.get('email');
+  const linkSecret = urlParams.get('secret');
   const [email, setEmail] = useState(linkEmail || '');
-  const [password, setPassword] = useState('');
+  const [password, setPassword] = useState(linkSecret || '');
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
   const navigate = useNavigate();
