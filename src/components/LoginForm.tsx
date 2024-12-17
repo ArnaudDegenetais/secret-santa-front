@@ -7,7 +7,9 @@ import TreeLoader from './TreeLoader/TreeLoader';
 
 const LoginForm: React.FC = () => {
   const apiUrl = import.meta.env.VITE_SANTA_BACK_URL;
-  const [email, setEmail] = useState('');
+  const urlParams = new URLSearchParams(window.location.search);
+  const linkEmail = urlParams.get('email');
+  const [email, setEmail] = useState(linkEmail || '');
   const [password, setPassword] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');

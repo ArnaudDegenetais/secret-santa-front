@@ -53,8 +53,8 @@ const MyReceiver: React.FC = () => {
       {showReceiver && (
         <div>
           <h2 className="text-center text-black mt-5 z-50">Shut, tu es le lutin secret pour : </h2>
-          <p className="text-center text-black mt-5 z-50">{receiver.firstName} {receiver.lastName}</p>
-          <p className="text-center text-black mt-5 z-50">Tu devrais prochainement recevoir un courrier pour lui.</p>
+          <p className="text-center text-4xl text-black mt-5 z-50">{receiver.firstName} {receiver.lastName}</p>
+          <p className="text-center text-black mt-5 z-50">Tu devrais prochainement avoir de ses nouvelles quand sa liste aura été envoyée au Père Noël.</p>
         </div>
       )}
     </div>
