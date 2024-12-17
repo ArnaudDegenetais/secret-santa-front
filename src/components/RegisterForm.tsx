@@ -9,9 +9,11 @@ const RegisterForm: React.FC = () => {
   const [error, setError] = useState<string>("");
 
   const handleSubmit = async (e: React.FormEvent) => {
+    const apiUrl = import.meta.env.VITE_SANTA_BACK_URL;
+
     e.preventDefault();
     try {
-      await axios.post("http://localhost:3000/api/users/register", {
+      await axios.post(`${apiUrl}/api/users/register`, {
         firstName,
         lastName,
         email,
